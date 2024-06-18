@@ -4,6 +4,9 @@
     <router-link to="/about">About</router-link>
   </nav>
   <router-view />
+  <a-badge :count="9">
+    <a-avatar shape="square" />
+  </a-badge>
 </template>
 
 <style>
