@@ -2,7 +2,11 @@
   <a-row class="grid-demo" :wrap="false" align="center">
     <a-col flex="auto">
       <div class="menu-demo">
-        <a-menu mode="horizontal" :default-selected-keys="['1']">
+        <a-menu
+          mode="horizontal"
+          :default-selected-keys="selectKeys"
+          @menu-item-click="doMenuClick"
+        >
           <a-menu-item
             key="0"
             :style="{ padding: 0, marginRight: '38px' }"
@@ -13,10 +17,9 @@
               <div class="title">AoPlat</div>
             </div>
           </a-menu-item>
-          <a-menu-item key="1">Home</a-menu-item>
-          <a-menu-item key="2">Solution</a-menu-item>
-          <a-menu-item key="3">Cloud Service</a-menu-item>
-          <a-menu-item key="4">Cooperation</a-menu-item>
+          <a-menu-item v-for="item in visuableRoutes" :key="item.path">
+            {{ item.name }}
+          </a-menu-item>
         </a-menu>
       </div>
     </a-col>
@@ -26,7 +29,31 @@
   </a-row>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { routes } from "@/router/routes";
+import { useRouter } from "vue-router";
+import { ref } from "vue";
+
+const router = useRouter();
+const selectKeys = ref(["/"]);
+
+router.afterEach((to) => {
+  selectKeys.value = [to.path];
+});
+
+const visuableRoutes = routes.filter((item) => {
+  if (item.meta?.hideInMenu) {
+    return false;
+  }
+  return true;
+});
+
+const doMenuClick = (key: string) => {
+  router.push({
+    path: key,
+  });
+};
+</script>
 
 <style scoped>
 .title-bar {
@@ -35,12 +62,12 @@
 }
 
 .title {
-  color: black;
   margin-left: 16px;
+  color: black;
 }
 
 .logo {
-  margin-top: 10px;
   height: 66px;
+  margin-top: 10px;
 }
 </style>
