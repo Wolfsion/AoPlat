@@ -24,7 +24,12 @@
       </div>
     </a-col>
     <a-col flex="100px">
-      <a-button type="primary" href="/user/login">登录</a-button>
+      <div v-if="loginUserStore.loginUser.id">
+        {{ loginUserStore.loginUser.userName ?? "匿名用户" }}
+      </div>
+      <div v-else>
+        <a-button type="primary" href="/user/login">登录</a-button>
+      </div>
     </a-col>
   </a-row>
 </template>
@@ -33,9 +38,13 @@
 import { routes } from "@/router/routes";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
+import { useLoginUserStore } from "@/store/userStore";
 
 const router = useRouter();
 const selectKeys = ref(["/"]);
+
+const loginUserStore = useLoginUserStore();
+loginUserStore.fetchUser();
 
 router.afterEach((to) => {
   selectKeys.value = [to.path];

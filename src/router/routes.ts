@@ -2,6 +2,9 @@ import { RouteRecordRaw } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 import UserLayout from "@/layouts/UserLayout.vue";
 import AboutView from "../views/AboutView.vue";
+import AdminView from "@/views/AdminView.vue";
+import ACCESS_ENUM from "@/access/accessEnum";
+import NoAuthView from "@/views/NoAuthView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -10,6 +13,22 @@ export const routes: Array<RouteRecordRaw> = [
     component: HomeView,
     meta: {
       hideInMenu: false,
+    },
+  },
+  {
+    path: "/admin",
+    name: "admin",
+    component: AdminView,
+    meta: {
+      access: ACCESS_ENUM.ADMIN,
+    },
+  },
+  {
+    path: "/noAuth",
+    name: "noAuth",
+    component: NoAuthView,
+    meta: {
+      hideInMenu: true,
     },
   },
   {
