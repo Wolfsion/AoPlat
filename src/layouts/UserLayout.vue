@@ -7,7 +7,9 @@
           <div>AoPlat AI答题应用平台</div>
         </a-space>
       </a-layout-header>
-      <a-layout-content class="content"> ... </a-layout-content>
+      <a-layout-content class="content">
+        <router-view />
+      </a-layout-content>
       <a-layout-footer class="footer">
         <a
           href="https://github.com/Wolfsion"

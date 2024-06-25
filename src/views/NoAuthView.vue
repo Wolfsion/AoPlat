@@ -1,5 +1,5 @@
 <template>
-  <div class="noAuth">
+  <div class="noAuthView">
     <h1>No permission to access this page.</h1>
   </div>
 </template>

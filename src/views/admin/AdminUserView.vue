@@ -1,7 +1,5 @@
 <template>
-  <div class="adminView">
-    <h1>Admin Page.</h1>
-  </div>
+  <h2>你好啊</h2>
 </template>
 
 <script setup lang="ts"></script>

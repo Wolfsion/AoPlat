@@ -17,6 +17,15 @@ export const useLoginUserStore = defineStore("counter", () => {
     if (res.data.code == 0 && res.data.data) {
       loginUser.value = res.data.data;
     } else {
+      // setTimeout(() => {
+      //   loginUser.value = {
+      //     id: 1,
+      //     userName: "测试用户",
+      //     userRole: ACCESS_ENUM.ADMIN,
+      //   };
+      // }, 3000);
+
+      // 标识数据，避免每次路由时都尝试获取历史登录信息
       loginUser.value = {
         userRole: ACCESS_ENUM.NOT_LOGIN,
       };
