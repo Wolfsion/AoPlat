@@ -13,6 +13,9 @@ import AdminAnswerView from "@/views/admin/AdminAnswerView.vue";
 import AdminGradeView from "@/views/admin/AdminGradeView.vue";
 import AdminQuestionView from "@/views/admin/AdminQuestionView.vue";
 import AppDetailView from "@/views/app/AppDetailView.vue";
+import AppAddView from "@/views/app/AppAddView.vue";
+import AppAddQuestionView from "@/views/app/AppAddQuestionView.vue";
+import AppAddGradeView from "@/views/app/AppAddGradeView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -24,7 +27,39 @@ export const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: "/app/detail/:id",
+    path: "/app/add",
+    name: "创建应用",
+    component: AppAddView,
+  },
+  {
+    path: "/app/add/:appId",
+    name: "修改应用",
+    props: true,
+    component: AppAddView,
+    meta: {
+      hideInMenu: true,
+    },
+  },
+  {
+    path: "/app/add_question/:appId",
+    name: "创建题目",
+    component: AppAddQuestionView,
+    props: true,
+    meta: {
+      hideInMenu: true,
+    },
+  },
+  {
+    path: "/app/add_grade/:appId",
+    name: "创建评分",
+    component: AppAddGradeView,
+    props: true,
+    meta: {
+      hideInMenu: true,
+    },
+  },
+  {
+    path: "/app/detail/:appId",
     name: "应用详情页",
     props: true,
     component: AppDetailView,
