@@ -8,6 +8,11 @@ import NoAuthView from "@/views/NoAuthView.vue";
 import UserLoginView from "@/views/user/UserLoginView.vue";
 import UserRegisterView from "@/views/user/UserRegisterView.vue";
 import AdminUserView from "@/views/admin/AdminUserView.vue";
+import AdminAppView from "@/views/admin/AdminAppView.vue";
+import AdminAnswerView from "@/views/admin/AdminAnswerView.vue";
+import AdminGradeView from "@/views/admin/AdminGradeView.vue";
+import AdminQuestionView from "@/views/admin/AdminQuestionView.vue";
+import AppDetailView from "@/views/app/AppDetailView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -19,9 +24,50 @@ export const routes: Array<RouteRecordRaw> = [
     },
   },
   {
+    path: "/app/detail/:id",
+    name: "应用详情页",
+    props: true,
+    component: AppDetailView,
+    meta: {
+      hideInMenu: true,
+    },
+  },
+  {
     path: "/admin/user",
     name: "用户管理",
     component: AdminUserView,
+    meta: {
+      access: ACCESS_ENUM.ADMIN,
+    },
+  },
+  {
+    path: "/admin/app",
+    name: "应用管理",
+    component: AdminAppView,
+    meta: {
+      access: ACCESS_ENUM.ADMIN,
+    },
+  },
+  {
+    path: "/admin/question",
+    name: "题目管理",
+    component: AdminQuestionView,
+    meta: {
+      access: ACCESS_ENUM.ADMIN,
+    },
+  },
+  {
+    path: "/admin/answer",
+    name: "答题管理",
+    component: AdminAnswerView,
+    meta: {
+      access: ACCESS_ENUM.ADMIN,
+    },
+  },
+  {
+    path: "/admin/grade",
+    name: "评分管理",
+    component: AdminGradeView,
     meta: {
       access: ACCESS_ENUM.ADMIN,
     },
