@@ -15,7 +15,7 @@
         >
           <img
             :style="{ width: '100%', transform: 'translateY(-20px)' }"
-            alt="dessert"
+            :alt="app.appName"
             :src="app.appIcon"
           />
         </div>

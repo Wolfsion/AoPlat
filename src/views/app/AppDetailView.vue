@@ -70,11 +70,12 @@ const refreshData = async () => {
   if (!props.appId) {
     return;
   }
-  const res = await getAppVoByIdUsingGet({ id: Number(props.appId) });
+
+  const res = await getAppVoByIdUsingGet({ id: props.appId as any });
   if (res.data.code === 0) {
     app.value = res.data.data || {};
   } else {
-    message.error("获取数据失败");
+    message.error("获取数据失败 " + res.data.message);
   }
 };
 watchEffect(() => {

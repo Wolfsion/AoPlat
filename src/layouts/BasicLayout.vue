@@ -40,7 +40,7 @@ import GlobalHeader from "@/components/GlobalHeader.vue";
   width: 100%;
   max-width: 1200px;
   margin: 0 auto 28px;
-  padding: 20px;
+  padding: 20px 20px 40px;
   background: linear-gradient(to right, #fefefe, #fff);
 }
 
