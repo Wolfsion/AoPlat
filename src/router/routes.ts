@@ -1,8 +1,7 @@
 import { RouteRecordRaw } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 import UserLayout from "@/layouts/UserLayout.vue";
-import AboutView from "../views/AboutView.vue";
-import AdminView from "@/views/AdminView.vue";
+import AboutView from "@/views/AboutView.vue";
 import ACCESS_ENUM from "@/access/accessEnum";
 import NoAuthView from "@/views/NoAuthView.vue";
 import UserLoginView from "@/views/user/UserLoginView.vue";
@@ -16,6 +15,9 @@ import AppDetailView from "@/views/app/AppDetailView.vue";
 import AppAddView from "@/views/app/AppAddView.vue";
 import AppAddQuestionView from "@/views/app/AppAddQuestionView.vue";
 import AppAddGradeView from "@/views/app/AppAddGradeView.vue";
+import AnswerResultView from "@/views/answer/AnswerResultView.vue";
+import AnswerAddView from "@/views/answer/AnswerAddView.vue";
+import MyAnswerView from "@/views/answer/MyAnswerView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -24,6 +26,35 @@ export const routes: Array<RouteRecordRaw> = [
     component: HomeView,
     meta: {
       hideInMenu: false,
+    },
+  },
+  {
+    path: "/answer/add/:appId",
+    name: "答题",
+    component: AnswerAddView,
+    props: true,
+    meta: {
+      hideInMenu: true,
+      access: ACCESS_ENUM.USER,
+    },
+  },
+  {
+    path: "/answer/result/:resultId",
+    name: "答题结果",
+    component: AnswerResultView,
+    props: true,
+    meta: {
+      hideInMenu: true,
+      access: ACCESS_ENUM.USER,
+    },
+  },
+  {
+    path: "/answer/my",
+    name: "我的答题",
+    component: MyAnswerView,
+    meta: {
+      hideInMenu: true,
+      access: ACCESS_ENUM.USER,
     },
   },
   {
@@ -141,8 +172,7 @@ export const routes: Array<RouteRecordRaw> = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+    component: () => AboutView,
     meta: {
       hideInMenu: false,
     },

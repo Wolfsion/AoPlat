@@ -25,7 +25,8 @@
     </a-col>
     <a-col flex="100px">
       <div v-if="loginUserStore.loginUser.id">
-        {{ loginUserStore.loginUser.userName ?? "匿名用户" }}
+        <AvatarDropdown :user="loginUserStore.loginUser ?? {}" />
+        <!--{{ loginUserStore.loginUser.userName ?? "匿名用户" }}-->
       </div>
       <div v-else>
         <a-button type="primary" href="/user/login">登录</a-button>
@@ -40,6 +41,7 @@ import { useRouter } from "vue-router";
 import { computed, ref } from "vue";
 import { useLoginUserStore } from "@/store/userStore";
 import checkAccess from "@/access/checkAccess";
+import AvatarDropdown from "@/components/AvatarDropdown.vue";
 
 const router = useRouter();
 const selectKeys = ref(["/"]);

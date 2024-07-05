@@ -59,12 +59,12 @@ import { ref, watchEffect } from "vue";
 import API from "@/api";
 import {
   deleteUserUsingPost,
-  listUserVoByPageUsingPost,
+  listUserByPageUsingPost,
 } from "@/api/userController";
 import message from "@arco-design/web-vue/es/message";
 import { dayjs } from "@arco-design/web-vue/es/_utils/date";
 
-const dataSource = ref<API.UserVO[]>([]);
+const dataSource = ref<API.User[]>([]);
 const total = ref<number>();
 const formSearchParams = ref<API.UserQueryRequest>({});
 const initSearchParams = {
@@ -120,7 +120,7 @@ const userColumns = [
 ];
 
 const refreshData = async () => {
-  const res = await listUserVoByPageUsingPost(searchParams.value);
+  const res = await listUserByPageUsingPost(searchParams.value);
   if (res.data.code === 0) {
     dataSource.value = res.data.data?.records || [];
     total.value = Number(res.data.data?.total || 0);

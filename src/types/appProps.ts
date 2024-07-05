@@ -6,4 +6,9 @@ interface AppDetailProps {
   appId: string;
 }
 
-export { AppProps, AppDetailProps };
+interface AppGradeProps {
+  appId: string;
+  updateResult: (result: API.ScoringResultVO) => void;
+}
+
+export { AppProps, AppDetailProps, AppGradeProps };

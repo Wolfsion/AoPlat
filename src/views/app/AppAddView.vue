@@ -1,5 +1,5 @@
 <template>
-  <div class="appAddView">
+  <div class="appAddGradeView">
     <h2 style="margin-bottom: 32px">设置应用</h2>
     <a-form
       :model="form"
@@ -71,7 +71,6 @@ import {
   getAppVoByIdUsingGet,
 } from "@/api/appController";
 import message from "@arco-design/web-vue/es/message";
-import AppVO = API.AppVO;
 import { AppDetailProps } from "@/types/appProps";
 
 const props = withDefaults(defineProps<AppDetailProps>(), {
@@ -81,14 +80,14 @@ const props = withDefaults(defineProps<AppDetailProps>(), {
 const form = ref({
   appName: "",
   appDesc: "",
-  appIcon: "",
+  appIcon: "https://picsum.photos/960/960",
   appType: 0,
   scoringStrategy: 0,
 } as API.AppAddRequest);
 
 const router = useRouter();
 
-const oldApp = ref<AppVO>();
+const oldApp = ref<API.AppVO>();
 const refreshData = async () => {
   if (props.appId) {
     const res = await getAppVoByIdUsingGet({ id: props.appId as any });
@@ -125,6 +124,6 @@ const submitApp = async () => {
 </script>
 
 <style scoped>
-.appAddView {
+.appAddGradeView {
 }
 </style>

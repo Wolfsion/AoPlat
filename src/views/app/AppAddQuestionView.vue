@@ -64,8 +64,8 @@
                   placeholder="请输入选项序号(例如: A,B)"
                 />
               </a-form-item>
-              <a-form-item field="result" label="选项内容">
-                <a-input v-model="option.result" placeholder="请输入选项内容" />
+              <a-form-item field="value" label="选项内容">
+                <a-input v-model="option.value" placeholder="请输入选项内容" />
               </a-form-item>
               <a-form-item field="score" label="选项分数">
                 <a-input-number
@@ -73,9 +73,9 @@
                   placeholder="请输入选项分数(无则忽略)"
                 />
               </a-form-item>
-              <a-form-item field="value" label="选项属性">
+              <a-form-item field="result" label="选项属性">
                 <a-input
-                  v-model="option.value"
+                  v-model="option.result"
                   placeholder="请输入选项属性(无则忽略)"
                 />
               </a-form-item>

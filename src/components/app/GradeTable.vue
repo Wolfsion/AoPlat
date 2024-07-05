@@ -1,5 +1,5 @@
 <template>
-  <div class="adminGradeView">
+  <div class="gradeTable">
     <a-form
       :model="formSearchParams"
       :style="{
@@ -23,20 +23,6 @@
           allow-clear
           v-model="formSearchParams.resultDesc"
           placeholder="请输入评分描述"
-        />
-      </a-form-item>
-      <a-form-item field="appId" label="应用id">
-        <a-input
-          allow-clear
-          v-model="formSearchParams.appId"
-          placeholder="请输入应用id"
-        />
-      </a-form-item>
-      <a-form-item field="userId" label="用户id">
-        <a-input
-          allow-clear
-          v-model="formSearchParams.userId"
-          placeholder="请输入用户id"
         />
       </a-form-item>
       <a-form-item>
@@ -67,7 +53,7 @@
       </template>
       <template #optional="{ record }">
         <a-space>
-          <a-button type="primary" @click="updateScoringResult(record)"
+          <a-button type="primary" @click="props.updateResult?.(record)"
             >修改
           </a-button>
           <a-button status="danger" @click="deleteScoringResult(record)"
@@ -80,16 +66,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect } from "vue";
+import { defineProps, ref, watchEffect, withDefaults, defineExpose } from "vue";
 import API from "@/api";
 import {
   deleteScoringResultUsingPost,
-  listScoringResultByPageUsingPost,
+  listScoringResultVoByPageUsingPost,
 } from "@/api/scoringResultController";
 import message from "@arco-design/web-vue/es/message";
 import { dayjs } from "@arco-design/web-vue/es/_utils/date";
+import { AppGradeProps } from "@/types/appProps";
 
-const dataSource = ref<API.ScoringResult[]>([]);
+const props = withDefaults(defineProps<AppGradeProps>(), {
+  appId: "",
+});
+
+const dataSource = ref<API.ScoringResultVO[]>([]);
 const total = ref<number>();
 const formSearchParams = ref<API.ScoringResultQueryRequest>({});
 const initSearchParams = {
@@ -129,14 +120,6 @@ const gradeColumns = [
     dataIndex: "resultScoreRange",
   },
   {
-    title: "应用id",
-    dataIndex: "appId",
-  },
-  {
-    title: "用户id",
-    dataIndex: "userId",
-  },
-  {
     title: "创建时间",
     dataIndex: "createTime",
     slotName: "createTime",
@@ -153,14 +136,23 @@ const gradeColumns = [
 ];
 
 const refreshData = async () => {
-  const res = await listScoringResultByPageUsingPost(searchParams.value);
-  if (res.data.code === 0) {
-    dataSource.value = res.data.data?.records || [];
-    total.value = Number(res.data.data?.total || 0);
-  } else {
-    message.error("获取数据失败");
+  if (props.appId) {
+    const res = await listScoringResultVoByPageUsingPost({
+      appId: props.appId as any,
+      ...searchParams.value,
+    });
+    if (res.data.code === 0) {
+      dataSource.value = res.data.data?.records || [];
+      total.value = Number(res.data.data?.total || 0);
+    } else {
+      message.error("获取数据失败");
+    }
   }
 };
+
+defineExpose({
+  refreshData,
+});
 
 watchEffect(() => {
   refreshData();
@@ -195,7 +187,7 @@ const onPageChange = (page: number) => {
 </script>
 
 <style scoped>
-.adminGradeView {
+.gradeTable {
   height: 90vh;
 }
 </style>

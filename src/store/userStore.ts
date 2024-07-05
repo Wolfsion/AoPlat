@@ -12,6 +12,12 @@ export const useLoginUserStore = defineStore("counter", () => {
     loginUser.value = UserVO;
   }
 
+  function clearUser() {
+    loginUser.value = {
+      userRole: ACCESS_ENUM.NOT_LOGIN,
+    };
+  }
+
   async function fetchUser() {
     const res = await getLoginUserUsingGet();
     if (res.data.code == 0 && res.data.data) {
@@ -35,6 +41,7 @@ export const useLoginUserStore = defineStore("counter", () => {
   return {
     loginUser,
     setUser,
+    clearUser,
     fetchUser,
   };
 });

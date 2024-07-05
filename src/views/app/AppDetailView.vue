@@ -26,7 +26,7 @@
             创建时间：{{ dayjs(app.createTime).format("YYYY-MM-DD HH:mm:ss") }}
           </p>
           <a-space size="large">
-            <a-button type="primary" :href="`/answer/${appId}`">
+            <a-button type="primary" :href="`/answer/add/${appId}`">
               开始答题
             </a-button>
             <a-button>分享应用</a-button>
