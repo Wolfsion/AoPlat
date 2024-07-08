@@ -2,7 +2,7 @@
   <div class="answerResultView">
     <a-card class="singleApp" hoverable>
       <a-row class="grid-demo" style="margin-bottom: 16px">
-        <a-col flex="auto" class="showContent">
+        <a-col :flex="7" class="showContent">
           <h2>{{ answer.resultName }}</h2>
           <p>结果评价: {{ answer.resultDesc }}</p>
           <p v-if="answer.resultScore">得分: {{ answer.resultScore }}</p>
@@ -36,7 +36,7 @@
             </a-button>
           </a-space>
         </a-col>
-        <a-col flex="320px">
+        <a-col :flex="3">
           <a-image width="100%" :src="answer.resultPicture" />
         </a-col>
       </a-row>

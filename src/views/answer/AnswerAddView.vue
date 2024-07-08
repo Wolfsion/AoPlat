@@ -30,7 +30,9 @@
             type="primary"
             circle
             @click="submitAnswer()"
-            >查看结果
+            :loading="loading"
+          >
+            {{ loading ? "分析中" : "查看结果" }}
           </a-button>
           <a-button
             v-if="curtOrder > 1"
@@ -56,13 +58,16 @@ import { listQuestionVoByPageUsingPost } from "@/api/questionController";
 import { addUserAnswerUsingPost } from "@/api/userAnswerController";
 
 const props = withDefaults(defineProps<AppDetailProps>(), {
-  appId: "",
+  appId: () => {
+    return "";
+  },
 });
 
 const router = useRouter();
 
 const app = ref<API.AppVO>();
 const question = ref<API.QuestionItemDTO[]>([]);
+const loading = ref(false);
 
 const refreshAppAndQ = async () => {
   let res: any;
@@ -118,6 +123,7 @@ const saveAnswer = () => {
 
 const submitAnswer = async () => {
   if (props.appId) {
+    loading.value = true;
     const res = await addUserAnswerUsingPost({
       appId: props.appId as any,
       choices: answerList.value,
@@ -128,6 +134,7 @@ const submitAnswer = async () => {
     } else {
       message.error("做题失败" + res.data.message);
     }
+    loading.value = false;
   }
 };
 </script>

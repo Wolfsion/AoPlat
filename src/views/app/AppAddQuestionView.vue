@@ -10,7 +10,13 @@
     >
       <a-form-item label="应用id"> {{ props.appId }}</a-form-item>
       <a-form-item label="题目列表" :content-flex="false" :merge-props="false">
-        <a-button @click="addQuestionItem(form.length)">添加题目</a-button>
+        <a-space size="large">
+          <a-button @click="addQuestionItem(form.length)">添加题目</a-button>
+          <AIGenerateDrawer
+            :appId="props.appId"
+            :generate-on-success="generateOnSuccess"
+          />
+        </a-space>
         <div v-for="(item, index) in form" :key="index" class="qsList">
           <a-space size="large">
             <h3>题目.{{ index + 1 }}</h3>
@@ -103,10 +109,13 @@ import {
   editQuestionUsingPost,
   listQuestionVoByPageUsingPost,
 } from "@/api/questionController";
+import AIGenerateDrawer from "@/components/app/AIGenerateDrawer.vue";
 
 const router = useRouter();
 const props = withDefaults(defineProps<AppDetailProps>(), {
-  appId: "",
+  appId: () => {
+    return "";
+  },
 });
 
 const form = ref<API.QuestionItemDTO[]>([]);
@@ -191,6 +200,11 @@ const submitQuestions = async () => {
   } else {
     message.error("操作失败" + res.data.message);
   }
+};
+
+const generateOnSuccess = (result: API.QuestionItemDTO[]) => {
+  message.success(`AI 生成题目成功，生成 ${result.length} 道题目`);
+  form.value = [...form.value, ...result];
 };
 </script>
 

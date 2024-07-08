@@ -1,3 +1,5 @@
+import QuestionItemDTO = API.QuestionItemDTO;
+
 interface AppProps {
   app: API.AppVO;
 }
@@ -11,4 +13,9 @@ interface AppGradeProps {
   updateResult: (result: API.ScoringResultVO) => void;
 }
 
-export { AppProps, AppDetailProps, AppGradeProps };
+interface AppGenerateProps {
+  appId: string;
+  generateOnSuccess: (result: QuestionItemDTO[]) => void;
+}
+
+export { AppProps, AppDetailProps, AppGradeProps, AppGenerateProps };
