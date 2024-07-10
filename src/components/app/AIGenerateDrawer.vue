@@ -4,6 +4,7 @@
     <a-drawer
       :width="340"
       :visible="visible"
+      :footer="false"
       @ok="handleOk"
       @cancel="handleCancel"
       unmountOnClose
@@ -16,6 +17,7 @@
         label-align="left"
         auto-label-width
         @submit="generateQs"
+        @submitAsync="generateQsAsync"
         style="margin-top: 20px"
       >
         <a-form-item field="questionCnt" label="题目数量">
@@ -35,15 +37,26 @@
           />
         </a-form-item>
         <a-form-item>
-          <a-button
-            type="primary"
-            html-type="generateQs"
-            style="width: 120px"
-            :loading="loading"
-            :footer="true"
-          >
-            {{ loading ? "生成中" : "AI一键生成" }}
-          </a-button>
+          <a-space size="medium">
+            <a-button
+              type="primary"
+              html-type="submit"
+              style="width: 100px"
+              :loading="loading"
+              :footer="true"
+            >
+              {{ loading ? "生成中" : "AI一键生成" }}
+            </a-button>
+            <a-button
+              type="primary"
+              @click="generateQsAsync"
+              style="width: 100px"
+              :loading="loadingAsync"
+              :footer="true"
+            >
+              {{ loadingAsync ? "生成中" : "AI实时生成" }}
+            </a-button>
+          </a-space>
         </a-form-item>
       </a-form>
     </a-drawer>
@@ -68,6 +81,7 @@ const form = ref({
   optionCnt: 2,
 });
 const loading = ref(false);
+const loadingAsync = ref(false);
 
 const handleClick = () => {
   visible.value = true;
@@ -93,6 +107,39 @@ const generateQs = async () => {
       message.error("AI生成失败" + res.data.message);
     }
     loading.value = false;
+  }
+};
+
+const generateQsAsync = () => {
+  if (props.appId) {
+    loadingAsync.value = true;
+    let first = true;
+
+    const eventSource = new EventSource(
+      "http://localhost:8101/api/question/ai_generate/sse" +
+        `?appId=${props.appId}&optionCnt=${form.value.optionCnt}&questionCnt=${form.value.questionCnt}`
+    );
+
+    eventSource.onerror = function (event) {
+      if (event.eventPhase === EventSource.CLOSED) {
+        console.log("closing sse connection...");
+        props.generateOnCloseAsync?.(event);
+      }
+      eventSource.close();
+    };
+
+    eventSource.onmessage = function (event) {
+      if (first) {
+        loadingAsync.value = false;
+        first = false;
+        handleCancel();
+      }
+      props.generateOnSuccessAsync?.(JSON.parse(event.data));
+    };
+
+    eventSource.onopen = function (event) {
+      console.log("starting sse connection...");
+    };
   }
 };
 </script>

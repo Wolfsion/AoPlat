@@ -16,6 +16,8 @@ interface AppGradeProps {
 interface AppGenerateProps {
   appId: string;
   generateOnSuccess: (result: QuestionItemDTO[]) => void;
+  generateOnSuccessAsync: (result: QuestionItemDTO) => void;
+  generateOnCloseAsync: (event: Event) => void;
 }
 
 export { AppProps, AppDetailProps, AppGradeProps, AppGenerateProps };

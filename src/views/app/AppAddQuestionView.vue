@@ -15,7 +15,10 @@
           <AIGenerateDrawer
             :appId="props.appId"
             :generate-on-success="generateOnSuccess"
+            :generate-on-success-async="generateOnSuccessAsync"
+            :generate-on-close-async="generateOnCloseAsync"
           />
+          <a-button status="danger" @click="clearQuestion()">清空题目</a-button>
         </a-space>
         <div v-for="(item, index) in form" :key="index" class="qsList">
           <a-space size="large">
@@ -148,6 +151,10 @@ const delQuestionItemOption = (
   question.options.splice(index, 1);
 };
 
+const clearQuestion = () => {
+  form.value = [];
+};
+
 const oldQuestion = ref<API.QuestionVO>({});
 
 const refreshData = async () => {
@@ -205,6 +212,14 @@ const submitQuestions = async () => {
 const generateOnSuccess = (result: API.QuestionItemDTO[]) => {
   message.success(`AI 生成题目成功，生成 ${result.length} 道题目`);
   form.value = [...form.value, ...result];
+};
+
+const generateOnSuccessAsync = (result: API.QuestionItemDTO) => {
+  form.value = [...form.value, result];
+};
+
+const generateOnCloseAsync = (event: Event) => {
+  message.success("生成完毕");
 };
 </script>
 
