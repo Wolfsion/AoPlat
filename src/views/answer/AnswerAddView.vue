@@ -30,7 +30,6 @@
             type="primary"
             circle
             @click="submitAnswer()"
-            :loading="loading"
           >
             {{ loading ? "分析中" : "查看结果" }}
           </a-button>
@@ -55,7 +54,10 @@ import { getAppVoByIdUsingGet } from "@/api/appController";
 import message from "@arco-design/web-vue/es/message";
 import { AppDetailProps } from "@/types/appProps";
 import { listQuestionVoByPageUsingPost } from "@/api/questionController";
-import { addUserAnswerUsingPost } from "@/api/userAnswerController";
+import {
+  addUserAnswerUsingPost,
+  generateUserAnswerIdUsingGet,
+} from "@/api/userAnswerController";
 
 const props = withDefaults(defineProps<AppDetailProps>(), {
   appId: () => {
@@ -68,6 +70,7 @@ const router = useRouter();
 const app = ref<API.AppVO>();
 const question = ref<API.QuestionItemDTO[]>([]);
 const loading = ref(false);
+const id = ref<number>(0);
 
 const refreshAppAndQ = async () => {
   let res: any;
@@ -99,6 +102,15 @@ watchEffect(() => {
   refreshAppAndQ();
 });
 
+watchEffect(async () => {
+  const res = await generateUserAnswerIdUsingGet();
+  if (res.data.code === 0 && res.data.data) {
+    id.value = res.data.data;
+  } else {
+    message.error("获取用户答题ID失败" + res.data.message);
+  }
+});
+
 const curtOrder = ref<number>(1);
 const curtQuestion = ref<API.QuestionItemDTO>();
 const curtQuestionOptions = computed(() => {
@@ -127,6 +139,7 @@ const submitAnswer = async () => {
     const res = await addUserAnswerUsingPost({
       appId: props.appId as any,
       choices: answerList.value,
+      id: id.value as any,
     });
 
     if (res.data.code === 0 && res.data.data) {

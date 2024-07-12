@@ -3,7 +3,9 @@
     <a-card class="innerCard" hoverable @click="switchDetail">
       <template #actions>
         <!--        <span class="icon-hover"> <IconThumbUp /> </span>-->
-        <span class="icon-hover"> <IconShareInternal /> </span>
+        <span class="icon-hover">
+          <IconShareInternal size="large" @click="shareApp" />
+        </span>
         <!--        <span class="icon-hover"> <IconMore /> </span>-->
       </template>
       <template #cover>
@@ -30,25 +32,23 @@
               :style="{ marginRight: '8px' }"
               :image-url="app.user?.userAvatar"
             />
-            <a-typography-text>{{
-              app.user?.userName ?? "匿名"
-            }}</a-typography-text>
+            <a-typography-text
+              >{{ app.user?.userName ?? "匿名" }}
+            </a-typography-text>
           </div>
         </template>
       </a-card-meta>
+      <ShareModel :url-link="link" title="分享应用" ref="shareModelRef" />
     </a-card>
   </div>
 </template>
 
 <script setup lang="ts">
-import {
-  IconThumbUp,
-  IconShareInternal,
-  IconMore,
-} from "@arco-design/web-vue/es/icon";
-import { defineProps, withDefaults } from "vue";
+import { IconShareInternal } from "@arco-design/web-vue/es/icon";
+import { defineProps, withDefaults, ref } from "vue";
 import { useRouter } from "vue-router";
 import { AppProps } from "@/types/appProps";
+import ShareModel from "@/components/ShareModel.vue";
 
 const props = withDefaults(defineProps<AppProps>(), {
   app: () => {
@@ -60,6 +60,17 @@ const router = useRouter();
 
 const switchDetail = () => {
   router.push(`/app/detail/${props.app.id}`);
+};
+
+const shareModelRef = ref();
+const link = `${window.location.protocol}//${window.location.host}/app/detail/${props.app.id}`;
+
+const shareApp = (e: Event) => {
+  if (shareModelRef.value) {
+    shareModelRef.value.openModel();
+  }
+
+  e.stopPropagation();
 };
 </script>
 <style scoped>

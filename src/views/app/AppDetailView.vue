@@ -29,7 +29,7 @@
             <a-button type="primary" :href="`/answer/add/${appId}`">
               开始答题
             </a-button>
-            <a-button>分享应用</a-button>
+            <a-button @click="shareApp">分享应用</a-button>
             <a-button v-if="isMe" :href="`/app/add_question/${appId}`">
               设置题目
             </a-button>
@@ -45,6 +45,7 @@
           <a-image width="100%" :src="app.appIcon" />
         </a-col>
       </a-row>
+      <ShareModel :url-link="link" title="分享应用" ref="shareModelRef" />
     </a-card>
   </div>
 </template>
@@ -58,6 +59,7 @@ import message from "@arco-design/web-vue/es/message";
 import { APP_SCORING_STRATEGY_MAP, APP_TYPE_MAP } from "@/types/appEnum";
 import { dayjs } from "@arco-design/web-vue/es/_utils/date";
 import { useLoginUserStore } from "@/store/userStore";
+import ShareModel from "@/components/ShareModel.vue";
 
 const props = withDefaults(defineProps<AppDetailProps>(), {
   appId: () => {
@@ -90,6 +92,17 @@ const isMe = computed(() => {
     loginUserStore.loginUser && loginUserStore.loginUser.id === app.value.userId
   );
 });
+
+const shareModelRef = ref();
+const link = `${window.location.protocol}//${window.location.host}/app/detail/${props.appId}`;
+
+const shareApp = (e: Event) => {
+  if (shareModelRef.value) {
+    shareModelRef.value.openModel();
+  }
+
+  e.stopPropagation();
+};
 </script>
 <style scoped>
 .appDetailView .showContent > * {

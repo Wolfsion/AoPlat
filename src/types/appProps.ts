@@ -20,4 +20,15 @@ interface AppGenerateProps {
   generateOnCloseAsync: (event: Event) => void;
 }
 
-export { AppProps, AppDetailProps, AppGradeProps, AppGenerateProps };
+interface AppShareProps {
+  urlLink: string;
+  title: string;
+}
+
+export {
+  AppProps,
+  AppDetailProps,
+  AppGradeProps,
+  AppGenerateProps,
+  AppShareProps,
+};
