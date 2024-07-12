@@ -16,12 +16,12 @@
         <a-input v-model="form.resultDesc" placeholder="请输入评分描述" />
       </a-form-item>
       <a-form-item field="resultPicture" label="评分图标">
-        <!--        <ImgUploader-->
-        <!--          biz="scoring_result_picture"-->
-        <!--          :value="form.resultPicture"-->
-        <!--          :onChange="(url: string) => (form.resultPicture = url)"-->
-        <!--        />-->
-        <a-input v-model="form.resultPicture" placeholder="请输入评分图像" />
+        <ImgUploader
+          biz="scoring_result_picture"
+          :value="form.resultPicture"
+          :onChange="(url: string) => (form.resultPicture = url)"
+        />
+        <!--<a-input v-model="form.resultPicture" placeholder="请输入评分图像" />-->
       </a-form-item>
       <a-form-item field="resultProp" label="评分属性集">
         <a-input-tag
@@ -82,7 +82,7 @@ const gradeTable = ref();
 const form = ref({
   resultName: "",
   resultDesc: "",
-  resultPicture: "https://picsum.photos/960/960",
+  resultPicture: "",
 } as API.ScoringResultAddRequest);
 
 const oldResultId = ref<string>();
