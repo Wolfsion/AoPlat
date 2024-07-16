@@ -29,6 +29,7 @@
             v-if="curtOrder === question.length"
             type="primary"
             circle
+            :loading="loading"
             @click="submitAnswer()"
           >
             {{ loading ? "分析中" : "查看结果" }}
